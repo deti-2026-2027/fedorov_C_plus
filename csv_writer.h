@@ -5,12 +5,16 @@
 #include <vector>
 #include "word_stat.h"
 
+// Записывает статистику слов в выходной поток в формате CSV
 class CSVWriter {
-public:
-    void write(std::ostream &out, std::vector<WordStat> words);
-
 private:
-    void sortWords(std::vector<WordStat> &words);
+    char delimiter;
+
+public:
+    CSVWriter(char delim);
+
+    // Формирует CSV-таблицу с заголовком
+    void write(std::ostream &out, const std::vector<WordStat> &words) const;
 };
 
 #endif

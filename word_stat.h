@@ -3,25 +3,26 @@
 
 #include <string>
 #include <cstddef>
-#include <vector>
 
-//класс, отвечающий за информацию о слове
+// Хранит статистику вхождений отдельного слова в тексте
 class WordStat {
 private:
     std::string word;
     std::size_t count = 0;
-    double frequency = 0.0;
+    double frequency = 0.0; // Относительная частота в процентах (0..100%)
 
 public:
     WordStat(std::string text);
 
-    void increment(); //увеличение счетчика слов
-    std::string getWord() const;
+    void increment();
+
+    const std::string &getWord() const;
 
     std::size_t getCount() const;
 
     double getFrequency() const;
 
+    // Вычисляет процентное соотношение слова относительно общего числа слов    
     void calcFrequency(std::size_t totalWords);
 };
 

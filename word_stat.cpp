@@ -5,13 +5,14 @@
 WordStat::WordStat(std::string text) {
     word = std::move(text);
     count = 1;
+    frequency = 0.0;
 }
 
 void WordStat::increment() {
     count++;
 }
 
-std::string WordStat::getWord() const {
+const std::string &WordStat::getWord() const {
     return word;
 }
 
@@ -27,5 +28,5 @@ void WordStat::calcFrequency(std::size_t totalWords) {
     if (totalWords == 0)
         frequency = 0.0;
     else
-        frequency = count / (double) totalWords * 100.0;
+        frequency = (double) count / (double) totalWords * 100.0;
 }

@@ -1,6 +1,7 @@
 #include "text_analyzer.h"
+#include <algorithm>
 
-void TextAnalyzer::addWord(std::string text) {
+void TextAnalyzer::addWord(const std::string &text) {
     totalWords++;
     for (WordStat &item: words) {
         if (item.getWord() == text) {
@@ -8,8 +9,7 @@ void TextAnalyzer::addWord(std::string text) {
             return;
         }
     }
-    WordStat newWord(text);
-    words.push_back(newWord);
+    words.emplace_back(text);
 }
 
 void TextAnalyzer::calcFrequencies() {
@@ -18,14 +18,15 @@ void TextAnalyzer::calcFrequencies() {
     }
 }
 
+void TextAnalyzer::sortWords() {
+    std::sort(words.begin(), words.end(), [](const WordStat &a, const WordStat &b) {
+        return a.getCount() > b.getCount();
+    });
+}
+
+
 bool TextAnalyzer::isSeparator(char ch) const {
-    if (ch == '\0')
-        return true;
-    for (char separator: separators) {
-        if (ch == separator)
-            return true;
-    }
-    return false;
+    return separators.find(ch) != std::string::npos;
 }
 
 void TextAnalyzer::analyze(std::istream &input) {
@@ -42,13 +43,15 @@ void TextAnalyzer::analyze(std::istream &input) {
             currentWord.clear();
         }
     }
+    // Добавляем последнее слово, если файл не заканчивался символом-разделителем
     if (!currentWord.empty()) {
         addWord(currentWord);
     }
 
     calcFrequencies();
+    sortWords();
 }
 
-std::vector<WordStat> TextAnalyzer::getWords() const {
+const std::vector<WordStat> &TextAnalyzer::getWords() const {
     return words;
 }
